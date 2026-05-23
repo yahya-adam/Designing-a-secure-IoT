@@ -4,26 +4,25 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 
 ## Architecture Overview
 IoT Devices (simulated or real)
-│
-│ mTLS (optional client certs)
+▼ mTLS (optional client certs)
+
+> MQTT Broker (Mosquitto, port 8883, TLS)
+
+ TLS + client certificate
 ▼
-MQTT Broker (Mosquitto, port 8883, TLS)
-│
-│ TLS + client certificate
+> Edge Gateway (validator, anonymiser, storage)
+
+ writes to
 ▼
-Edge Gateway (validator, anonymiser, storage)
-│
-│ writes to
+> SQLCipher‑encrypted SQLite database
+
+ read by
 ▼
-SQLCipher‑encrypted SQLite database
-│
-│ read by
+> FastAPI Gateway (decrypts data, serves JSON)
+
+ HTTP + API key
 ▼
-FastAPI Gateway (decrypts data, serves JSON)
-│
-│ HTTP + API key
-▼
-Grafana (visualisation)
+> Grafana (visualisation)
 
 
 ## Components
@@ -146,6 +145,7 @@ File Structure
 ├── Dockerfile.*          # Device, edge, api, mosquitto
 ├── requirements-*.txt
 └── .env                  # Secrets (DB_KEY, API_KEY)
+
 
 Limitations & Future Work
 
