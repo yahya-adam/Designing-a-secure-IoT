@@ -3,7 +3,7 @@
 This project implements a secure, privacy‑preserving IoT telemetry pipeline. Sensor data is transmitted over TLS‑encrypted MQTT, validated, minimised (with differential privacy), stored in an SQLCipher‑encrypted database, and finally visualised via Grafana through a secure API layer.
 
 ## Architecture Overview
-(![alt text](achitecture.png))
+![Architecture Overview](./architecture.png)
 
 ## Components
 
