@@ -48,6 +48,7 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 - Dashboards display real‑time and historical sensor values (temperature, CO, LPG, etc.).
 - Secured with admin credentials (change from default).
 
+
 ## Security Measures
 
 | Layer               | Protection                                      |
