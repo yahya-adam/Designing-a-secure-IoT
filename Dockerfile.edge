@@ -1,0 +1,33 @@
+FROM python:3.11-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libsqlcipher-dev \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-edge.txt .
+RUN pip install --no-cache-dir -r requirements-edge.txt
+
+COPY config ./config
+COPY edge ./edge
+COPY models ./models
+COPY storage ./storage
+COPY run_edge.py .
+
+ENV PYTHONPATH=/app
+
+ENV MQTT_BROKER=mqtt
+ENV MQTT_PORT=8883
+ENV MQTT_TLS_CA=""
+ENV MQTT_TLS_CERT=""
+ENV MQTT_TLS_KEY=""
+ENV DB_PATH=/data/telemetry.db
+ENV DB_KEY=""                     
+ENV DP_EPSILON=1.0
+ENV DATA_RETENTION_DAYS=30
+
+ENTRYPOINT ["python", "run_edge.py"]

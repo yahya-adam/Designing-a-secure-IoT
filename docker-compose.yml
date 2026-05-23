@@ -1,0 +1,151 @@
+services:
+  mqtt:
+    build:
+      context: .
+      dockerfile: Dockerfile.mosquitto
+
+    hostname: gateway
+
+    ports:
+      - "8883:8883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./certs:/mosquitto/certs
+      - ./private:/mosquitto/private
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  edge:
+    build:
+      context: .
+      dockerfile: Dockerfile.edge
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER: gateway
+      MQTT_PORT: 8883
+      MQTT_TLS_CA: /certs/ca.cert.pem
+      MQTT_TLS_CERT: /certs/gateway.cert.pem
+      MQTT_TLS_KEY: /private/gateway.key.pem
+      DB_PATH: /data/telemetry.db
+      DB_KEY: ${DB_KEY}
+    volumes:
+      - db_data:/data
+      - ./certs:/certs:ro
+      - ./private:/private:ro
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  device1:
+    build:
+      context: .
+      dockerfile: Dockerfile.device
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER: gateway
+      MQTT_PORT: 8883
+      MQTT_TLS_CA: /certs/ca.cert.pem
+      MQTT_TLS_CERT: /certs/b8:27:eb:bf:9d:51.cert.pem
+      MQTT_TLS_KEY: /private/b8:27:eb:bf:9d:51.key.pem
+      SENSOR_READ_INTERVAL_SEC: "2"
+    command: ["b8:27:eb:bf:9d:51", "--mode", "csv", "--csv", "/data/device1.csv"]
+    volumes:
+      - ./data/device1.csv:/data/device1.csv:ro
+      - ./certs:/certs:ro
+      - ./private:/private:ro
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  device2:
+    build:
+      context: .
+      dockerfile: Dockerfile.device
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER: gateway
+      MQTT_PORT: 8883
+      MQTT_TLS_CA: /certs/ca.cert.pem
+      MQTT_TLS_CERT: /certs/1c:bf:ce:15:ec:4d.cert.pem
+      MQTT_TLS_KEY: /private/1c:bf:ce:15:ec:4d.key.pem
+      SENSOR_READ_INTERVAL_SEC: "2"
+    command: ["1c:bf:ce:15:ec:4d", "--mode", "csv", "--csv", "/data/device2.csv"]
+    volumes:
+      - ./data/device2.csv:/data/device2.csv:ro
+      - ./certs:/certs:ro
+      - ./private:/private:ro
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  device3:
+    build:
+      context: .
+      dockerfile: Dockerfile.device
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER: gateway
+      MQTT_PORT: 8883
+      MQTT_TLS_CA: /certs/ca.cert.pem
+      MQTT_TLS_CERT: /certs/00:0f:00:70:91:0a.cert.pem
+      MQTT_TLS_KEY: /private/00:0f:00:70:91:0a.key.pem
+      SENSOR_READ_INTERVAL_SEC: "2"
+    command: ["00:0f:00:70:91:0a", "--mode", "csv", "--csv", "/data/device3.csv"]
+    volumes:
+      - ./data/device3.csv:/data/device3.csv:ro
+      - ./certs:/certs:ro
+      - ./private:/private:ro
+    networks:
+      - iot_network
+    restart: unless-stopped
+  
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      - edge   
+    environment:
+      DB_PATH: /data/telemetry.db
+      DB_KEY: ${DB_KEY}                    
+      API_KEY: ${API_KEY}
+    volumes:
+      - db_data:/data
+    networks:
+      - iot_network
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - api
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin   # change in production
+      - GF_INSTALL_PLUGINS=grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning   # optional
+    networks:
+      - iot_network
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+networks:
+  iot_network:
+    driver: bridge
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
+  db_data:
+  grafana_data:

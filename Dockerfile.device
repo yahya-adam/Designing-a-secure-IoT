@@ -1,0 +1,25 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY requirements-device.txt .
+RUN pip install --no-cache-dir -r requirements-device.txt
+
+COPY config ./config
+COPY device ./device
+COPY models ./models
+COPY run_device.py .
+
+ENV PYTHONPATH=/app
+
+ENV MQTT_BROKER=mqtt
+ENV MQTT_PORT=1883
+ENV MQTT_TLS_CA=""
+ENV MQTT_TLS_CERT=""
+ENV MQTT_TLS_KEY=""
+ENV SIMULATE_SENSORS=true
+ENV SENSOR_READ_INTERVAL_SEC=2
+ENV DP_EPSILON=1.0
+ENV DATA_RETENTION_DAYS=30
+
+ENTRYPOINT ["python", "run_device.py"]
