@@ -5,7 +5,7 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 - [Architecture Overview](#architecture-overview)
 - [Components](#components)
    - [1. MQTT Broker (Mosquitto)](#1-mqtt-broker-mosquitto)
-   - [. IoT Devices (Publishers)](#2-iot-devices-publishers)
+   - [2. IoT Devices (Publishers)](#2-iot-devices-publishers)
    - [3. Edge Gateway (Subscriber + Processor)](#3-edge-gateway-subscriber--processor)
    - [4. Encrypted Database (SQLCipher)](#4-encrypted-database-sqlcipher)
    - [5. FastAPI Gateway (Secure API)](#5-fastapi-gateway-secure-api)
