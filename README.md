@@ -100,28 +100,28 @@ docker compose up --build
 
 5. Verify
 
-    MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem
+- MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem
 
-    API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health
+- API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health
 
-    Grafana: http://localhost:3000 (admin/admin)
+- : http://localhost:3000 (admin/admin)
 
 
-Visualisation in Grafana
+6. Visualisation in Grafana
 
-    Install Infinity plugin in Grafana.
+-  Install Infinity plugin in Grafana.
 
-    Add data source:
+-  Add data source:
 
-        URL: http://api:8000
+-       URL: http://api:8000
 
-        Header: X-API-Key = your API key.
+-        Header: X-API-Key = your API key.
 
-    Create dashboards using the API endpoints:
+-   Create dashboards using the API endpoints:
 
-        Table of latest values: /api/latest?limit=100
+-       Table of latest values: /api/latest?limit=100
 
-        Time series of temperature: /api/timeseries?device=$device&from_ts=$__from_ms/1000&to_ts=$__to_ms/1000
+-      Time series of temperature: /api/timeseries?device=$device&from_ts=$__from_ms/1000&to_ts=$__to_ms/1000
 
     Add a device variable querying /api/devices.
 
@@ -145,11 +145,8 @@ Visualisation in Grafana
 
 ## Limitations & Future Work
 
-    Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.
-
-    24‑hour aggregation – currently uses per‑reading noise; implement true daily aggregates.
-
-    Key rotation – SQLCipher supports REKEY, but not yet implemented.
-
-    Scaling – SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at application level.
+-    Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.
+-    24‑hour aggregation – currently uses per‑reading noise; implement true daily aggregates.
+-    Key rotation – SQLCipher supports REKEY, but not yet implemented.
+-    Scaling – SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at application level.
 
