@@ -17,7 +17,7 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 - [Limitations & Future Work](#limitations--future-work)
 
 ## Architecture Overview
-![alt text](images/achitecture.png)
+![alt text](images/achitecture.png "Click to enlarge")
 
 
 ## Components
