@@ -1,6 +1,20 @@
 # Privacy‑Centric IoT System for Home Environment
 
 This project implements a secure, privacy‑preserving IoT telemetry pipeline. Sensor data is transmitted over TLS‑encrypted MQTT, validated, minimised (with differential privacy), stored in an SQLCipher‑encrypted database, and finally visualised via Grafana through a secure API layer.
+## Table of Contents
+- [Architecture Overview](#architecture-overview)
+- [Components](#components)
+   - [1. MQTT Broker (Mosquitto)](#1-mqtt-broker-mosquitto)
+   - [. IoT Devices (Publishers)](#2-iot-devices-publishers)
+   - [3. Edge Gateway (Subscriber + Processor)](#3-edge-gateway-subscriber--processor)
+   - [4. Encrypted Database (SQLCipher)](#4-encrypted-database-sqlcipher)
+   - [5. FastAPI Gateway (Secure API)](#5-fastapi-gateway-secure-api)
+   - [6. Grafana (Visualisation)](#6-grafana-visualisation)
+- [Security Measures](#security-measures)
+- [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+- [File Structure](#file-structure)
+- [Limitations & Future Work](#limitations--future-work)
 
 ## Architecture Overview
 ![alt text](images/achitecture.png)
@@ -71,7 +85,7 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 ```bash
 # Create CA, broker, gateway, and device certificates
 # See `gen_certs.sh` script (or use your own PKI)
-
+```
 2. Prepare CSV Data
 
 Place CSV files for each device in ./data/ with columns:
@@ -111,7 +125,7 @@ Visualisation in Grafana
 
     Add a device variable querying /api/devices.
 
-File Structure
+## File Structure
 .
 ├── api/                  # FastAPI application
 ├── certs/                # CA, server, client certificates
@@ -129,7 +143,7 @@ File Structure
 └── .env                  # Secrets (DB_KEY, API_KEY)
 
 
-Limitations & Future Work
+## Limitations & Future Work
 
     Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.
 
