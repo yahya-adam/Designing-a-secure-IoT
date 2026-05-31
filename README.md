@@ -84,7 +84,6 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 ### 1. Generate Certificates (if not already present)
 ```bash
 # Create CA, broker, gateway, and device certificates
-# See `gen_certs.sh` script (or use your own PKI)
 ```
 2. Prepare CSV Data
 
