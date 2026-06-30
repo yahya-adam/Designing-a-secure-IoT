@@ -68,11 +68,11 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 | Layer               | Protection                                      |
 |---------------------|-------------------------------------------------|
 | MQTT transport      | TLS 1.2/1.3 (port 8883)                         |
-| Broker authentication| Client certificates (optional) + username       |
+| Broker authentication| Client certificates (optional) + username      |
 | Database at rest    | SQLCipher (AES‑256)                             |
 | API access          | API key (`X-API-Key` header)                    |
 | Data minimisation   | Differential privacy (Laplace noise)            |
-| Network isolation   | All containers on a dedicated Docker bridge    |
+| Network isolation   | All containers on a dedicated Docker bridge     |
 
 ## Getting Started
 
@@ -126,20 +126,20 @@ docker compose up --build
 
 ## File Structure
 .
-├── api/                  # FastAPI application
-├── certs/                # CA, server, client certificates
-├── config/               # Python settings module
-├── data/                 # CSV files for devices
-├── device/               # Device publisher logic
-├── edge/                 # Edge gateway (validator, minimiser)
-├── models/               # Pydantic data models
-├── storage/              # Database handler (SQLCipher)
-├── mosquitto/config/     # Mosquitto configuration
-├── private/              # Private keys (keep secure!)
-├── docker-compose.yml
-├── Dockerfile.*          # Device, edge, api, mosquitto
-├── requirements-*.txt
-└── .env                  # Secrets (DB_KEY, API_KEY)
+- ├── api/                  # FastAPI application
+- ├── certs/                # CA, server, client certificates
+- ├── config/               # Python settings module
+- ├── data/                 # CSV files for devices
+- ├── device/               # Device publisher logic
+- ├── edge/                 # Edge gateway (validator, minimiser)
+- ├── models/               # Pydantic data models
+- ├── storage/              # Database handler (SQLCipher)
+- ├── mosquitto/config/     # Mosquitto configuration
+- ├── private/              # Private keys (keep secure!)
+- ├── docker-compose.yml
+- ├── Dockerfile.*          # Device, edge, api, mosquitto
+- ├── requirements-*.txt
+- └── .env                  # Secrets (DB_KEY, API_KEY)
 
 
 ## Limitations & Future Work
