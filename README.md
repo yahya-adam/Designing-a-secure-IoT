@@ -113,8 +113,6 @@ docker compose up --build
 MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem
 API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health
 Grafana: Open http://localhost:3000 (admin/admin)
-
-<<<<<<< HEAD
   MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem\
   API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health\
   : http://localhost:3000 (admin/admin)
@@ -137,7 +135,6 @@ Grafana: Open http://localhost:3000 (admin/admin)
 -      Time series of temperature: /api/timeseries?device=$device&from_ts=$__from_ms/1000&to_ts=$__to_ms/1000
 =======
 ### Step 6: Visualisation in Grafana
->>>>>>> refs/remotes/origin/main
 
     Install Infinity plugin in Grafana.
     Add data source:
@@ -167,24 +164,6 @@ Grafana: Open http://localhost:3000 (admin/admin)
   ├── Dockerfile.*          # Device, edge, api, mosquitto\
   ├── requirements-*.txt\
   └── .env                  # Secrets (DB_KEY, API_KEY)
-=======
-├── api/                  # FastAPI application
-├── certs/                # CA, server, client certificates
-├── config/               # Python settings module
-├── data/                 # CSV files for devices
-├── device/               # Device publisher logic
-├── edge/                 # Edge gateway (validator, minimiser)
-├── models/               # Pydantic data models
-├── storage/              # Database handler (SQLCipher)
-├── mosquitto/config/     # Mosquitto configuration
-├── private/              # Private keys (keep secure!)
-├── docker-compose.yml
-├── Dockerfile.*          # Device, edge, api, mosquitto
-├── requirements-*.txt
-└── .env                  # Secrets (DB_KEY, API_KEY)
-```
->>>>>>> refs/remotes/origin/main
-
 
 ## Limitations & Future Work
 
