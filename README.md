@@ -23,44 +23,44 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 ## Components
 
 ### 1. MQTT Broker (Mosquitto)
-- Listens on port **8883** (TLS).
-- Server certificate: `broker.cert.pem` + `broker.key.pem`.
-- Client certificates are **accepted but not required** (`require_certificate false`).  
-  Devices and the edge gateway can present their own certificates for identification.
+Listens on port **8883** (TLS).\
+Server certificate: `broker.cert.pem` + `broker.key.pem`.\
+Client certificates are **accepted but not required** (`require_certificate false`).\
+Devices and the edge gateway can present their own certificates for identification.
 
 ### 2. IoT Devices (Publishers)
-- Simulated devices read from CSV files (or generate random data) and publish to topic `privenergy/sensors/<MAC>/raw`.
-- Each device uses a **client certificate** and the **CA certificate** to authenticate the broker.
-- **No database access** – devices only publish.
+Simulated devices read from CSV files (or generate random data) and publish to topic `privenergy/sensors/<MAC>/raw`.\
+Each device uses a **client certificate** and the **CA certificate** to authenticate the broker.\
+**No database access** – devices only publish.
 
 ### 3. Edge Gateway (Subscriber + Processor)
-- Subscribes to `privenergy/sensors/+/raw` over TLS.
-- **Validates** incoming payloads against a Pydantic schema.
-- **Minimises & anonymises** data:  
-  - Applies Laplace mechanism (differential privacy) to numerical values.  
-  - Aggregates into 1‑hour buckets (can be extended to 24h).
-- **Stores** raw and minimised data into an **SQLCipher‑encrypted SQLite** database.
+Subscribes to `privenergy/sensors/+/raw` over TLS.\
+**Validates** incoming payloads against a Pydantic schema.\
+**Minimises & anonymises** data:  
+  Applies Laplace mechanism (differential privacy) to numerical values.\
+  Aggregates into 1‑hour buckets (can be extended to 24h).\
+**Stores** raw and minimised data into an **SQLCipher‑encrypted SQLite** database.
 
 ### 4. Encrypted Database (SQLCipher)
-- SQLite database encrypted with AES‑256 via `pysqlcipher3`.
-- The encryption key (`DB_KEY`) is passed as an environment variable to the **edge** and **API** containers.
-- Without the correct key, the database is unreadable.
+SQLite database encrypted with AES‑256 via `pysqlcipher3`.\
+The encryption key (`DB_KEY`) is passed as an environment variable to the **edge** and **API** containers.\
+Without the correct key, the database is unreadable.
 
 ### 5. FastAPI Gateway (Secure API)
-- Runs a REST API that:
-  - Decrypts the database using the same `DB_KEY`.
-  - Requires an **API key** (`X-API-Key` header) for all requests.
-- Endpoints:
-  - `GET /health` – status check.
-  - `GET /api/latest?limit=N` – last N sensor readings.
-  - `GET /api/devices` – list of all device MACs.
-  - `GET /api/timeseries?device=...&from_ts=...&to_ts=...` – historical data.
-- Listens on port **8000** (internal network only, not exposed to host unless needed).
+Runs a REST API that:
+  Decrypts the database using the same `DB_KEY`.\
+  Requires an **API key** (`X-API-Key` header) for all requests.\
+Endpoints:
+  `GET /health` – status check.\
+  `GET /api/latest?limit=N` – last N sensor readings.\
+  `GET /api/devices` – list of all device MACs.\
+  `GET /api/timeseries?device=...&from_ts=...&to_ts=...` – historical data.\
+Listens on port **8000** (internal network only, not exposed to host unless needed).
 
 ### 6. Grafana (Visualisation)
-- Uses the **Infinity** data source plugin to query the FastAPI gateway.
-- Dashboards display real‑time and historical sensor values (temperature, CO, LPG, etc.).
-- Secured with admin credentials (change from default).
+Uses the **Infinity** data source plugin to query the FastAPI gateway.\
+Dashboards display real‑time and historical sensor values (temperature, CO, LPG, etc.).\
+Secured with admin credentials (change from default).
 
 
 ## Security Measures
@@ -77,9 +77,9 @@ This project implements a secure, privacy‑preserving IoT telemetry pipeline. S
 ## Getting Started
 
 ### Prerequisites
-- Docker & Docker Compose
-- Python 3.11+ (for local development, optional)
-- OpenSSL (to generate certificates)
+Docker & Docker Compose\
+Python 3.11+ (for local development, optional)\
+OpenSSL (to generate certificates)
 
 ### 1. Generate Certificates (if not already present)
 ```bash
@@ -99,11 +99,9 @@ docker compose up --build
 
 5. Verify
 
-- MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem
-
-- API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health
-
-- : http://localhost:3000 (admin/admin)
+  MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem\
+  API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health\
+  : http://localhost:3000 (admin/admin)
 
 
 6. Visualisation in Grafana
@@ -126,26 +124,26 @@ docker compose up --build
 
 ## File Structure
 .
-- ├── api/                  # FastAPI application
-- ├── certs/                # CA, server, client certificates
-- ├── config/               # Python settings module
-- ├── data/                 # CSV files for devices
-- ├── device/               # Device publisher logic
-- ├── edge/                 # Edge gateway (validator, minimiser)
-- ├── models/               # Pydantic data models
-- ├── storage/              # Database handler (SQLCipher)
-- ├── mosquitto/config/     # Mosquitto configuration
-- ├── private/              # Private keys (keep secure!)
-- ├── docker-compose.yml
-- ├── Dockerfile.*          # Device, edge, api, mosquitto
-- ├── requirements-*.txt
-- └── .env                  # Secrets (DB_KEY, API_KEY)
+  ├── api/                  # FastAPI application\
+  ├── certs/                # CA, server, client certificates\
+  ├── config/               # Python settings module\
+  ├── data/                 # CSV files for devices\
+  ├── device/               # Device publisher logic\
+  ├── edge/                 # Edge gateway (validator, minimiser)\
+  ├── models/               # Pydantic data models\
+  ├── storage/              # Database handler (SQLCipher)\
+  ├── mosquitto/config/     # Mosquitto configuration\
+  ├── private/              # Private keys (keep secure!)\
+  ├── docker-compose.yml\
+  ├── Dockerfile.*          # Device, edge, api, mosquitto\
+  ├── requirements-*.txt\
+  └── .env                  # Secrets (DB_KEY, API_KEY)
 
 
 ## Limitations & Future Work
 
--    Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.
--    24‑hour aggregation – currently uses per‑reading noise; implement true daily aggregates.
--    Key rotation – SQLCipher supports REKEY, but not yet implemented.
--    Scaling – SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at application level.
+ Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.\
+ 24‑hour aggregation – currently uses per‑reading noise; implement true daily aggregates.\
+ Key rotation – SQLCipher supports REKEY, but not yet implemented.\
+ Scaling – SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at application level.
 
