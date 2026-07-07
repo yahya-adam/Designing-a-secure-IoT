@@ -134,20 +134,20 @@ Grafana: Open http://localhost:3000 (admin/admin)
 
 ```text
 .
-├── api/                  # FastAPI application
-├── certs/                # CA, server, client certificates
-├── config/               # Python settings module
-├── data/                 # CSV files for devices
-├── device/               # Device publisher logic
-├── edge/                 # Edge gateway (validator, minimiser)
-├── models/               # Pydantic data models
-├── storage/              # Database handler (SQLCipher)
-├── mosquitto/config/     # Mosquitto configuration
-├── private/              # Private keys (keep secure!)
-├── docker-compose.yml
-├── Dockerfile.*          # Device, edge, api, mosquitto
-├── requirements-*.txt
-└── .env                  # Secrets (DB_KEY, API_KEY)
+ ├── api/                  # FastAPI application
+ ├── certs/                # CA, server, client certificates
+ ├── config/               # Python settings module
+ ├── data/                 # CSV files for devices
+ ├── device/               # Device publisher logic
+ ├── edge/                 # Edge gateway (validator, minimiser)
+ ├── models/               # Pydantic data models
+ ├── storage/              # Database handler (SQLCipher)
+ ├── mosquitto/config/     # Mosquitto configuration
+ ├── private/              # Private keys (keep secure!)
+ ├── docker-compose.yml
+ ├── Dockerfile.*          # Device, edge, api, mosquitto
+ ├── requirements-*.txt
+ └── .env                  # Secrets (DB_KEY, API_KEY)
 ```
 
 
