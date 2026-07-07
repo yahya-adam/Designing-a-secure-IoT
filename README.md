@@ -153,8 +153,8 @@ Grafana: Open http://localhost:3000 (admin/admin)
 
 ## Limitations & Future Work
 
-    Client certificate enforcement: Currently optional; can be enabled by setting require_certificate true in mosquitto.conf.
-    24‑hour aggregation: Currently uses per-reading noise; implement true daily aggregates.
-    Key rotation: SQLCipher supports REKEY, but not yet implemented.
-    Scaling: SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at the application level.
+ Client certificate enforcement: Currently optional; can be enabled by setting require_certificate true in mosquitto.conf.\
+ 24‑hour aggregation: Currently uses per-reading noise; implement true daily aggregates.\
+ Key rotation: SQLCipher supports REKEY, but not yet implemented.\
+ Scaling: SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at the application level.
 
