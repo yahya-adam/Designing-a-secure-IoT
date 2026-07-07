@@ -113,7 +113,31 @@ docker compose up --build
 MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem
 API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health
 Grafana: Open http://localhost:3000 (admin/admin)
+<<<<<<< HEAD
 
+=======
+  MQTT broker: openssl s_client -connect localhost:8883 -CAfile certs/ca.cert.pem\
+  API health: curl -H "X-API-Key: $API_KEY" http://localhost:8000/health\
+  : http://localhost:3000 (admin/admin)
+
+
+6. Visualisation in Grafana
+
+-  Install Infinity plugin in Grafana.
+
+-  Add data source:
+
+-       URL: http://api:8000
+
+-        Header: X-API-Key = your API key.
+
+-   Create dashboards using the API endpoints:
+
+-       Table of latest values: /api/latest?limit=100
+
+-      Time series of temperature: /api/timeseries?device=$device&from_ts=$__from_ms/1000&to_ts=$__to_ms/1000
+=======
+>>>>>>> refs/remotes/origin/main
 ### Step 6: Visualisation in Grafana
 
     Install Infinity plugin in Grafana.
@@ -129,6 +153,7 @@ Grafana: Open http://localhost:3000 (admin/admin)
 
 ```text
 .
+<<<<<<< HEAD
 ├── api/                  # FastAPI application
 ├── certs/                # CA, server, client certificates
 ├── config/               # Python settings module
@@ -152,4 +177,27 @@ Grafana: Open http://localhost:3000 (admin/admin)
     24‑hour aggregation: Currently uses per-reading noise; implement true daily aggregates.
     Key rotation: SQLCipher supports REKEY, but not yet implemented.
     Scaling: SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at the application level.
+=======
+<<<<<<< HEAD
+  ├── api/                  # FastAPI application\
+  ├── certs/                # CA, server, client certificates\
+  ├── config/               # Python settings module\
+  ├── data/                 # CSV files for devices\
+  ├── device/               # Device publisher logic\
+  ├── edge/                 # Edge gateway (validator, minimiser)\
+  ├── models/               # Pydantic data models\
+  ├── storage/              # Database handler (SQLCipher)\
+  ├── mosquitto/config/     # Mosquitto configuration\
+  ├── private/              # Private keys (keep secure!)\
+  ├── docker-compose.yml\
+  ├── Dockerfile.*          # Device, edge, api, mosquitto\
+  ├── requirements-*.txt\
+  └── .env                  # Secrets (DB_KEY, API_KEY)
+
+## Limitations & Future Work
+ Client certificate enforcement – currently optional; can be enabled by setting require_certificate true in mosquitto.conf.\
+ 24‑hour aggregation – currently uses per‑reading noise; implement true daily aggregates.\
+ Key rotation – SQLCipher supports REKEY, but not yet implemented.\
+ Scaling – SQLite is single‑writer; for multiple edges, switch to PostgreSQL + encryption at application level.
+>>>>>>> refs/remotes/origin/main
 
